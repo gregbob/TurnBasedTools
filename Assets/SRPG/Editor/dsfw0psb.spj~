@@ -1,0 +1,22 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEditor;
+
+[CustomEditor(typeof(BlockTests))]
+public class BlockTestEditor : Editor {
+
+	void OnSceneGUI ()
+    {
+        RaycastHit hit;
+        if (EditorUtils.SceneViewMouseRaycast(this, Event.current, out hit)) {
+            MeshFilter mf = hit.collider.GetComponent<MeshFilter>();
+            foreach(Vector3 v in mf.sharedMesh.uv)
+            {
+                mf.sharedMesh.
+                Debug.Log(v);
+            }
+           
+        }
+    }
+}

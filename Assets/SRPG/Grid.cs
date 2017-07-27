@@ -31,7 +31,7 @@ public class Grid : MonoBehaviour {
 
     void Start ()
     {
-        GenerateGrid(3, 3);
+        GenerateGrid(1, 1);
     }
 
     public void Resize(int numRows, int numCols)

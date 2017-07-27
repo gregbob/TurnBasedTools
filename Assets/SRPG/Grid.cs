@@ -31,7 +31,7 @@ public class Grid : MonoBehaviour {
 
     void Start ()
     {
-        GenerateGrid(1, 1);
+        GenerateGrid(1, 3);
     }
 
     public void Resize(int numRows, int numCols)
@@ -54,8 +54,24 @@ public class Grid : MonoBehaviour {
     }
 
 
+    public void DestroyGrid()
+    {
+        if (_grid != null)
+        {
+            for (int row = 0; row < _rows; row++)
+            {
+                for (int col = 0; col < _cols; col++)
+                {
+                    Destroy(this[row, col].gameObject);
+                }
+            }
+        }
+    }
+
     public void GenerateGrid(int width, int length)
     {
+        DestroyGrid();
+
         _grid = new GridBlock[width * length];
         _rows = width;
         _cols = length;

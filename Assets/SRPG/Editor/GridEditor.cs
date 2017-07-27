@@ -29,7 +29,6 @@ public class GridEditor : Editor {
             Vector2[] uvs = m.uv;
             _selectedQuad = FindQuadOfBoxCollider(hit.transform, hit.normal, verts, normals);
 
-            ////Debug.Log(uvs[0] + " " + uvs[1] + " " + uvs[2] + " " + uvs[3]);
             //uvs[0] = uvs[3];
             //uvs[3] = uvs[2];
             //uvs[2] = uvs[1];

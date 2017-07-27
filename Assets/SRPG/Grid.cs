@@ -23,7 +23,7 @@ public class Grid : MonoBehaviour {
         get { return _cols; }
     }
 
-    public GridBlock this[int row, int col]
+    public GridBlock this[int col, int row]
     {
         get { return _grid[row * _cols + col]; }
         set { _grid[row * _cols + col] = value; }
@@ -34,15 +34,15 @@ public class Grid : MonoBehaviour {
         GenerateGrid(1, 3);
     }
 
-    public void Resize(int numRows, int numCols)
+    public void Resize(int numCols, int numRows)
     {
         if (_grid == null)
         {           
             _grid = new GridBlock[numRows * numCols];
         }
         GridBlock[] newGrid = new GridBlock[numRows * numCols];
-        int minX = Math.Min(_rows, numRows);
-        int minY = Math.Min(_cols, numCols);
+        int minX = Math.Min(_cols, numCols);
+        int minY = Math.Min(_rows, numRows);
 
         for (int i = 0; i < minY; i++)
         {
@@ -58,40 +58,41 @@ public class Grid : MonoBehaviour {
     {
         if (_grid != null)
         {
-            for (int row = 0; row < _rows; row++)
+            
+            for (int col = 0; col < _cols; col++)
             {
-                for (int col = 0; col < _cols; col++)
+                for (int row = 0; row < _rows; row++)
                 {
-                    Destroy(this[row, col].gameObject);
+                    Destroy(this[col, row].gameObject);
                 }
             }
         }
     }
 
-    public void GenerateGrid(int width, int length)
+    public void GenerateGrid(int numCols, int numRows)
     {
         DestroyGrid();
 
-        _grid = new GridBlock[width * length];
-        _rows = width;
-        _cols = length;
-        for (int row = 0; row < width; row++)
+        _grid = new GridBlock[numCols * numRows];
+        _rows = numRows;
+        _cols = numCols;
+        for (int col = 0; col < _cols; col++)
         {
-            for (int col = 0; col < length; col++)
+            for (int row = 0; row < _rows; row++)
             {
-                GenerateBlock(row, col);
+                GenerateBlock(col, row);
             }
         }
     }
 
-    public void GenerateBlock(int row, int col)
+    public void GenerateBlock(int col, int row)
     {
         GridBlock block = Instantiate(defaultBlock);
-        block.transform.position = new Vector3(row, 0, col);
+        block.transform.position = new Vector3(col, 0, row);
         block.row = row;
         block.col = col;
         block.grid = this;
-        this[row, col] = block;
+        this[col, row] = block;
     }
 
     /*
@@ -101,12 +102,12 @@ public class Grid : MonoBehaviour {
     */
     public void AddRow()
     {
-        Resize(_rows + 1, _cols);
-        Debug.Log(_rows + " " + _cols);
-        for (int col = 0; col < _cols; col++)
-        {
-            GenerateBlock(_rows - 1, col);
-        }
+        //Resize(_rows + 1, _cols);
+        //Debug.Log(_rows + " " + _cols);
+        //for (int col = 0; col < _cols; col++)
+        //{
+        //    GenerateBlock(_rows - 1, col);
+        //}
     }
 
     public void AddColumn()

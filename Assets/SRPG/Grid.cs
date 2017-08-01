@@ -3,7 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[SelectionBase]
 public class Grid : MonoBehaviour {
+
+
+    
 
     [SerializeField]
     private GridBlock[] _grid;
@@ -12,6 +16,9 @@ public class Grid : MonoBehaviour {
 
     [SerializeField]
     private GridBlock defaultBlock;
+
+    [SerializeField]
+    private GameObject _blockContainer;
 
     public int Rows
     {
@@ -56,22 +63,18 @@ public class Grid : MonoBehaviour {
 
     public void DestroyGrid()
     {
-        if (_grid != null)
+
+        if (_grid != null && _blockContainer != null)
         {
-            
-            for (int col = 0; col < _cols; col++)
-            {
-                for (int row = 0; row < _rows; row++)
-                {
-                    Destroy(this[col, row].gameObject);
-                }
-            }
+            DestroyImmediate(_blockContainer);
         }
     }
 
     public void GenerateGrid(int numCols, int numRows)
     {
         DestroyGrid();
+        _blockContainer = new GameObject("Blocks");
+        _blockContainer.transform.SetParent(transform);
 
         _grid = new GridBlock[numCols * numRows];
         _rows = numRows;
@@ -80,12 +83,12 @@ public class Grid : MonoBehaviour {
         {
             for (int row = 0; row < _rows; row++)
             {
-                GenerateBlock(col, row);
+                GenerateBlock(col, row).transform.SetParent(_blockContainer.transform);
             }
         }
     }
 
-    public void GenerateBlock(int col, int row)
+    public GridBlock GenerateBlock(int col, int row)
     {
         GridBlock block = Instantiate(defaultBlock);
         block.transform.position = new Vector3(col, 0, row);
@@ -93,6 +96,7 @@ public class Grid : MonoBehaviour {
         block.col = col;
         block.grid = this;
         this[col, row] = block;
+        return block;
     }
 
     /*
